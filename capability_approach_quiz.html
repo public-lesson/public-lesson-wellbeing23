@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capability Approach Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #003f5c;
+            color: #e0e0e0;
+        }
+        .quiz-container {
+            max-width: 768px;
+            margin: 2rem auto;
+            background-color: #1a4f6d;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem; /* このパディングが基準になります */
+            position: relative; 
+        }
+        .quiz-option {
+            background-color: #374c80;
+            border: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .quiz-option:hover:not(:disabled) {
+            background-color: #4a5c90;
+        }
+        .quiz-option.selected {
+            border-color: #ffa600;
+            background-color: #4a5c90;
+        }
+        .quiz-option.correct {
+            background-color: #10B981;
+            border-color: #10B981;
+            color: white;
+        }
+        .quiz-option.incorrect {
+            background-color: #EF4444;
+            border-color: #EF4444;
+            color: white;
+        }
+        .quiz-option:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background-color: #ffa600;
+            color: #003f5c;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #ff764a;
+        }
+        .btn-secondary {
+            background-color: #7a5195;
+            color: white;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-secondary:hover {
+            background-color: #ef5675;
+        }
+        .rationale {
+            background-color: #2a3e5c;
+            border-left: 4px solid #7a5195;
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div id="quizApp" class="quiz-container">
+        <h1 class="text-3xl font-bold text-center mb-6 text-[#ffa600]">ケイパビリティ・アプローチ確認テスト</h1>
+
+        <div id="quizContent">
+            <p id="questionText" class="text-xl font-semibold mb-6"></p>
+            <div id="answerOptions" class="space-y-4 mb-6"></div>
+            <div id="feedbackContainer" class="hidden mb-6 p-4 rounded-lg rationale" role="alert">
+                <p id="feedbackText" class="font-medium"></p>
+                <p id="rationaleText" class="text-sm mt-2"></p>
+            </div>
+            <p id="hintText" class="hidden text-sm italic text-gray-400 mb-6"></p>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <button id="hintButton" class="btn-secondary px-6 py-2 rounded-lg text-lg font-bold">ヒント</button>
+            <button id="submitButton" class="btn-primary px-8 py-3 rounded-lg text-xl font-bold">決定</button>
+        </div>
+
+        <div id="nextButtonContainer" class="absolute bottom-8 right-8">
+             <button id="nextButton" class="btn-primary px-8 py-3 rounded-lg text-xl font-bold hidden">次の問題へ</button>
+        </div>
+
+        <div id="completionMessage" class="hidden text-center mt-12">
+            <h2 class="text-3xl font-bold text-[#ffa600] mb-4">クイズ完了！</h2>
+            <p class="text-xl">全ての質問に解答しました。素晴らしいです！</p>
+            <p class="text-lg mt-4">この調子で学習を続けていきましょう。</p>
+        </div>
+    </div>
+
+    <script>
+        const quizData = {
+          "questions": [{
+            "question": "あなたは毎朝、学校まで健康な足で歩いて通学しています。この「歩いている」という状態は、ケイパビリティ・アプローチにおいて何に最も近いですか？",
+            "answerOptions": [{
+              "text": "機能（Functioning）",
+              "isCorrect": true,
+              "rationale": "「機能」は、人が実際に達成している状態や活動そのものを指します。この場合、歩いて通学するという行為がそれにあたります。"
+            }, {
+              "text": "ケイパビリティ（Capability）",
+              "isCorrect": false,
+              "rationale": "「ケイパビリティ」は、歩くこと以外にも自転車に乗ったり、公共交通機関を利用したりできる「選択肢の広がり」を指します。"
+            }, {
+              "text": "資源（Resource）",
+              "isCorrect": false,
+              "rationale": "歩くための靴や通学路などが「資源」にあたりますが、歩くという行為そのものではありません。"
+            }, {
+              "text": "変換要因",
+              "isCorrect": false,
+              "rationale": "健康な足という個人の状態や、安全な通学路という環境が「変換要因」にあたります。歩くという行為そのものではありません。"
+            }],
+            "hint": "実際に「行っていること」や「なれている状態」を指す言葉は何だったでしょうか？"
+          }, {
+            "question": "あなたが定期テストで良い点を取るために、インターネットで無料の学習動画を視聴しました。この「無料の学習動画」は、ケイパビリティ・アプローチにおいて何に分類されますか？",
+            "answerOptions": [{
+              "text": "機能（Functioning）",
+              "isCorrect": false,
+              "rationale": "「機能」は、動画を視聴して「学習できた」という活動自体や、その結果として「良い点が取れた」という状態を指します。"
+            }, {
+              "text": "ケイパビリティ（Capability）",
+              "isCorrect": false,
+              "rationale": "「ケイパビリティ」は、動画だけでなく参考書や塾など、様々な方法で学習できる「選択肢の広がり」を指します。"
+            }, {
+              "text": "資源（Resource）",
+              "isCorrect": true,
+              "rationale": "無料の学習動画は、学習という機能やケイパビリティを達成するために利用される「手段」や「モノ」であり、資源と位置づけられます。"
+            }, {
+              "text": "変換要因",
+              "isCorrect": false,
+              "rationale": "学習動画を理解できる個人の学習能力や、動画を視聴できるインターネット環境が「変換要因」にあたります。"
+            }],
+            "hint": "何かを達成するための「道具」や「材料」となるものは、このアプローチでは何と呼ばれていたでしょうか。"
+          }, {
+            "question": "ある生徒は、スマートフォンを持っていて、学校の友達とメッセージアプリで連絡を取り合っています。しかし、その生徒の親はスマートフォンの使用時間を厳しく制限しているため、夜には友達と連絡が取れません。この「親による使用時間制限」は、ケイパビリティ・アプローチにおいて何に最も近いですか？",
+            "answerOptions": [{
+              "text": "個人的要因",
+              "isCorrect": false,
+              "rationale": "親の制限は、生徒自身の能力や特性ではなく、生徒が置かれている「社会的・環境的要因」の一部と考えることができます。"
+            }, {
+              "text": "社会的要因",
+              "isCorrect": false,
+              "rationale": "家庭内のルールは、より広範な社会全体の制度や規範とは区別され、この文脈では「環境的要因」と考えるのが適切です。"
+            }, {
+              "text": "環境的要因",
+              "isCorrect": true,
+              "rationale": "このケースでは、家庭内のルールが生徒の行動選択に影響を与える「環境的要因」として機能しています。資源をケイパビリティに変換する過程で、この要因が影響を与えています。"
+            }, {
+              "text": "機能（Functioning）",
+              "isCorrect": false,
+              "rationale": "「機能」は実際に友達と連絡を取り合っている状態です。制限は、その機能の実現を阻害する要因となります。"
+            }],
+            "hint": "スマートフォンという「資源」を使って友達と連絡を取り合うという「ケイパビリティ」が制限されているのは、どのような要因によるものでしょうか。個人の能力や社会の制度以外の、家庭内のルールを考えてみましょう。"
+          }, {
+            "question": "高校が、生徒全員が学校生活を楽しめるように、多種多様な部活動や委員会活動を新設し、参加費用も無料にしました。この政策は、生徒のどのようなケイパビリティを向上させようとしていますか？",
+            "answerOptions": [{
+              "text": "学業成績を向上させるケイパビリティ",
+              "isCorrect": false,
+              "rationale": "直接的な目的は成績向上ではなく、学校生活への参加や自己実現の機会を広げることです。"
+            }, {
+              "text": "将来の職業を選択するケイパビリティ",
+              "isCorrect": false,
+              "rationale": "間接的に影響する可能性はありますが、直接的な目的は学校生活における活動選択の自由の拡大です。"
+            }, {
+              "text": "自分の興味や能力に基づいて、学校生活における活動を選択し、参加できるケイパビリティ",
+              "isCorrect": true,
+              "rationale": "多様な選択肢を費用なしで提供することで、生徒が自身の興味や能力に合った活動を自由に選び、参加できる機会を広げています。これはケイパビリティの核心です。"
+            }, {
+              "text": "部活動や委員会活動に強制的に参加する機能",
+              "isCorrect": false,
+              "rationale": "「強制」ではなく「自由に選択できる」点が重要であり、機能ではなくケイパビリティの向上を目指しています。"
+            }],
+            "hint": "多くの選択肢が提供され、費用もかからないことで、生徒の何に関する「自由」が広がるでしょうか。"
+          }, {
+            "question": "ある日、あなたは体調が悪く、学校を休みました。一方、友人も体調が悪く、学校を休みましたが、家庭の経済状況が悪く病院に行くことができません。両者とも「学校を休む」という同じ状態ですが、ケイパビリティ・アプローチの観点から見て、特に問題視されるのはどちらの状況ですか？",
+            "answerOptions": [{
+              "text": "あなたの状況。学校を休むという選択は、学習の機会を失う可能性があるため。",
+              "isCorrect": false,
+              "rationale": "あなたの状況は自己決定に基づいた休息であり、健康回復の選択肢は確保されていると推測されます。"
+            }, {
+              "text": "友人の状況。体調を回復させるための基本的な選択肢（病院に行く）を奪われているため。",
+              "isCorrect": true,
+              "rationale": "友人の状況は、経済的な理由により、健康を回復するという価値ある機能を実現するための機会（ケイパビリティ）が欠如しているため、アプローチが解消を目指す中心的な課題です。"
+            }, {
+              "text": "両者とも同じ。「学校を休む」という客観的な事実が等しく重要であるため。",
+              "isCorrect": false,
+              "rationale": "このアプローチは、客観的な事実の背後にある「機会の有無」を区別することを重要視します。"
+            }, {
+              "text": "どちらも問題ない。病気で学校を休むのは自然なことだから。",
+              "isCorrect": false,
+              "rationale": "機会の欠如は、自然なこととは異なり、個人の尊厳に関わる問題として捉えられます。"
+            }],
+            "hint": "このアプローチが重視するのは、「休む」という結果の背後にある「健康を回復する選択肢があったかどうか」です。"
+          }, {
+            "question": "あなたはスマートフォンを持っていますが、利用制限が多く、家族としか連絡が取れません。友人はスマートフォンを持っていないが、公衆電話が近くにあり、いつでも友達と連絡が取れます。この状況で、より高い「社会と交流できるケイパビリティ」を持っているのはどちらですか？",
+            "answerOptions": [{
+              "text": "スマートフォンを持っているあなた。",
+              "isCorrect": false,
+              "rationale": "スマートフォンという資源を持っていても、利用制限によって社会と交流する自由が制限されているため、必ずしもケイパビリティが高いとは言えません。"
+            }, {
+              "text": "スマートフォンを持っていない友人。",
+              "isCorrect": true,
+              "rationale": "友人はスマートフォンを持っていませんが、公衆電話という別の手段で「いつでも」友達と連絡が取れるため、実質的に社会と交流できるケイパビリティが高いと言えます。"
+            }, {
+              "text": "どちらも同じ。手段が違うだけで結果は同じだから。",
+              "isCorrect": false,
+              "rationale": "ケイパビリティ・アプローチは、手段だけでなく、その手段を通じてどれだけの選択肢を自由に選べるかという「機会の質」を重視します。"
+            }, {
+              "text": "この状況では判断できない。",
+              "isCorrect": false,
+              "rationale": "提供された情報から、どちらがより多くの機会を持っているかを判断することは可能です。"
+            }],
+            "hint": "「社会と交流できる」という目的を達成するための「選択肢の広がり」に注目しましょう。持っているモノではなく、「できること」を基準に考えてみてください。"
+          }, {
+            "question": "学校が、全生徒に「全員参加必須」の年間行事（例：体育祭の特定の競技）を設けました。ケイパビリティ・アプローチの観点から、この「全員参加必須」という規則に対する潜在的な懸念点は何ですか？",
+            "answerOptions": [{
+              "text": "生徒の身体能力には個人差があるため、公平性に欠ける可能性がある。",
+              "isCorrect": false,
+              "rationale": "公平性の問題はありますが、アプローチの主な懸念は、活動の強制が個人の選択の自由を奪うことに関連しています。"
+            }, {
+              "text": "生徒が、その競技以外に興味のある活動や、別の形で学校生活に参加する機会を制約する可能性がある。",
+              "isCorrect": true,
+              "rationale": "特定の活動を義務付けることは、生徒が自身の興味や能力に基づいて他の価値ある機能を選択・追求する自由を奪う可能性があり、これがケイパビリティ・アプローチの主要な懸念点です。"
+            }, {
+              "text": "教員や生徒の準備に時間がかかり、「資源」を過度に消費するため。",
+              "isCorrect": false,
+              "rationale": "資源の消費は運用上の課題ですが、ケイパビリティ・アプローチの核心は、選択の機会が失われる点にあります。"
+            }, {
+              "text": "全員が協力することで、団結力が高まるという良い「機能」が期待できるから。",
+              "isCorrect": false,
+              "rationale": "期待される良い機能があるとしても、それが「強制」されることで、個人の自由がどこまで尊重されるかが問われます。"
+            }],
+            "hint": "強制される活動は、生徒の「選ぶ自由」にどのような影響を与えるでしょうか。たとえ良い活動であっても、その点が重要です。"
+          }, {
+            "question": "学校のテストの点数だけで生徒の「学習の豊かさ」を測ることについて、ケイパビリティ・アプローチの観点から最も妥当な批判は何ですか？",
+            "answerOptions": [{
+              "text": "テストの採点方法が複雑すぎるから。",
+              "isCorrect": false,
+              "rationale": "採点方法の複雑さではなく、テストの点数が「何を測っているのか」という本質的な点が論点です。"
+            }, {
+              "text": "テストの点数は、生徒が学習方法を自由に選択できる機会や、学習の過程で得られる深い理解、好奇心の育成といった多様な「学習のケイパビリティ」を反映しないから。",
+              "isCorrect": true,
+              "rationale": "テストの点数は、学習という「機能」の一側面を測るに過ぎず、生徒が学習の過程でどのような選択肢を持ち、どのような機会を得られたかという「ケイパビリティ」を捉えきれないため、この批判は妥当です。"
+            }, {
+              "text": "テストの点数が高い生徒は、他の生徒よりも努力しているとは限らないから。",
+              "isCorrect": false,
+              "rationale": "努力の有無は重要な要素ですが、ケイパビリティ・アプローチからの主な批判は、点数という「結果」だけでは見えない「機会」に焦点を当てています。"
+            }, {
+              "text": "テストの点数が低い生徒は、学習の「機能」を全く実現できていないから。",
+              "isCorrect": false,
+              "rationale": "点数が低くても、何らかの形で学習機能は実現している可能性があり、批判の本質は点数と機会の間の関係にあります。"
+            }],
+            "hint": "同じ点数でも、そこに至るまでの「過程」や「選択肢」が異なる場合を考えてみましょう。点数だけで見えないものは何でしょうか。"
+          }, {
+            "question": "あなたは、特定の教科の学習に困難を抱えています。学校が、個別指導の時間を設けたり、特別な教材を提供したりして、あなたをサポートしてくれるようになりました。この出来事は、ケイパビリティ・アプローチにおけるどの要素の相互作用を示していますか？",
+            "answerOptions": [{
+              "text": "あなたの「個人的要因」のみが学習困難の原因であったこと。",
+              "isCorrect": false,
+              "rationale": "個人の要因だけでなく、学校の支援という社会的要因がなければ、状況は改善しなかったかもしれません。"
+            }, {
+              "text": "学校の「資源」提供のみが重要であり、あなたの努力は関係ないこと。",
+              "isCorrect": false,
+              "rationale": "資源提供は重要ですが、それを利用する個人の意思や努力も、学習という機能の実現には不可欠です。"
+            }, {
+              "text": "あなたの「個人的要因」（学習困難）と、学校による「資源」や「機会提供」（個別指導、教材）という「社会的変換要因」が組み合わさって、学習のケイパビリティが実現されたこと。",
+              "isCorrect": true,
+              "rationale": "この選択肢は、生徒の個別の状況（個人的要因）と、学校が提供するサポート（社会的変換要因）が相互に作用することで、初めて学習の機会（ケイパビリティ）が拡大されるという、アプローチの核心を示しています。"
+            }, {
+              "text": "個別指導と教材という「機能」が直接的にあなたの学習能力を高めたこと。",
+              "isCorrect": false,
+              "rationale": "個別指導や教材は機能を生み出すための「手段」や「資源」であり、それによって学習の「ケイパビリティ」が向上しました。"
+            }],
+            "hint": "あなたの「個人的な状態」と、学校という「社会的な支援」がどのように結びついて、学習の機会が広がったのかを考えてみましょう。"
+          }, {
+            "question": "高校卒業後、あなたは大学進学か就職か、どちらの道に進むか悩んでいます。ケイパビリティ・アプローチにおける「目的」と「手段」の関係性を踏まえると、この決断において最も重視すべきことは何ですか？",
+            "answerOptions": [{
+              "text": "より高い収入を得られる方を選択すること。",
+              "isCorrect": false,
+              "rationale": "収入は重要な手段ですが、このアプローチでは、収入そのものが目的ではなく、それがもたらす選択の自由を重視します。"
+            }, {
+              "text": "社会的に「成功」していると見なされる道を選択すること。",
+              "isCorrect": false,
+              "rationale": "他者の評価ではなく、自分自身が価値あると考える生き方を自由に選択できることが重要です。"
+            }, {
+              "text": "あなたが本当に価値あると考える「機能」を将来にわたって自由に選択し、実現できる機会（ケイパビリティ）を最大化する道を選択すること。",
+              "isCorrect": true,
+              "rationale": "大学進学や就職は、様々な機能（学習、仕事、社会貢献など）を実現するための「手段」であり、その手段を通じて、自分が望む生き方を「自由に選択できる」機会を広げることが究極の目的とされます。"
+            }, {
+              "text": "親や先生に勧められた道を選ぶこと。",
+              "isCorrect": false,
+              "rationale": "他者の意見は参考になりますが、最終的には自身の自由な選択に基づくことが、このアプローチの核心です。"
+            }],
+            "hint": "大学進学や就職は、あなたの人生における何を達成するための「道具」となるでしょうか。最も本質的な価値は何でしょうか。"
+          }]
+        };
+
+        let currentQuestionIndex = 0;
+        let selectedAnswerIndex = null;
+        let quizCompleted = false;
+        let currentShuffledOptions = [];
+
+        const quizAppElement = document.getElementById('quizApp'); // クイズコンテナ要素を取得
+        const questionTextElement = document.getElementById('questionText');
+        const answerOptionsElement = document.getElementById('answerOptions');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const feedbackText = document.getElementById('feedbackText');
+        const rationaleText = document.getElementById('rationaleText');
+        const hintTextElement = document.getElementById('hintText');
+        const hintButton = document.getElementById('hintButton');
+        const nextButton = document.getElementById('nextButton');
+        const submitButton = document.getElementById('submitButton');
+        const completionMessage = document.getElementById('completionMessage');
+        const quizContent = document.getElementById('quizContent');
+        const nextButtonContainer = document.getElementById('nextButtonContainer');
+
+        function shuffleArray(array) {
+            const newArray = [...array]; 
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= quizData.questions.length) {
+                showCompletion();
+                return;
+            }
+
+            quizAppElement.style.paddingBottom = ''; // 追加したpaddingBottomをリセット
+
+            const question = quizData.questions[currentQuestionIndex];
+            questionTextElement.textContent = `Q${currentQuestionIndex + 1}. ${question.question}`;
+            currentShuffledOptions = shuffleArray(question.answerOptions);
+            
+            answerOptionsElement.innerHTML = '';
+            feedbackContainer.classList.add('hidden');
+            hintTextElement.classList.add('hidden');
+            selectedAnswerIndex = null;
+            
+            submitButton.classList.remove('hidden');
+            submitButton.disabled = true; 
+            
+            nextButton.classList.add('hidden'); 
+            hintButton.classList.remove('hidden');
+            hintButton.disabled = false;
+
+            currentShuffledOptions.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option.text;
+                button.className = 'quiz-option w-full text-left p-4 rounded-lg text-lg focus:outline-none';
+                button.dataset.index = index; 
+                button.addEventListener('click', () => selectOption(button, index));
+                answerOptionsElement.appendChild(button);
+            });
+        }
+
+        function selectOption(selectedButton, index) {
+            if (submitButton.classList.contains('hidden')) return;
+            selectedAnswerIndex = index;
+            const options = answerOptionsElement.children;
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            selectedButton.classList.add('selected');
+            submitButton.disabled = false; 
+        }
+
+        function submitAnswer() {
+            if (selectedAnswerIndex === null || quizCompleted) return;
+
+            const selectedOptionObject = currentShuffledOptions[selectedAnswerIndex];
+            const options = answerOptionsElement.children;
+
+            feedbackContainer.classList.remove('hidden');
+            rationaleText.textContent = selectedOptionObject.rationale;
+
+            if (selectedOptionObject.isCorrect) {
+                feedbackText.textContent = '正解です！';
+                feedbackText.className = 'font-bold text-green-300';
+                options[selectedAnswerIndex].classList.add('correct');
+            } else {
+                feedbackText.textContent = '不正解です。';
+                feedbackText.className = 'font-bold text-red-300';
+                options[selectedAnswerIndex].classList.add('incorrect');
+                const correctAnswerShuffledIndex = currentShuffledOptions.findIndex(opt => opt.isCorrect);
+                if (correctAnswerShuffledIndex !== -1 && options[correctAnswerShuffledIndex]) {
+                    options[correctAnswerShuffledIndex].classList.add('correct');
+                }
+            }
+
+            Array.from(options).forEach(btn => btn.disabled = true);
+
+            submitButton.classList.add('hidden');
+            nextButton.classList.remove('hidden'); 
+            hintButton.classList.add('hidden');
+            hintButton.disabled = true;
+
+            // 「次の問題へ」ボタンとフィードバックが重ならないように、コンテナのpadding-bottomを調整
+            // ボタンの高さ＋少しの余白分を確保するイメージ (8rem = 128px 程度を仮設定)
+            quizAppElement.style.paddingBottom = '8rem'; 
+        }
+
+        function showHint() {
+            if (quizCompleted || submitButton.classList.contains('hidden')) return;
+            const question = quizData.questions[currentQuestionIndex];
+            hintTextElement.textContent = `ヒント: ${question.hint}`;
+            hintTextElement.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showCompletion() {
+            quizContent.classList.add('hidden');
+            hintButton.classList.add('hidden');
+            submitButton.classList.add('hidden');
+            nextButton.classList.add('hidden'); 
+            completionMessage.classList.remove('hidden');
+            quizCompleted = true;
+            quizAppElement.style.paddingBottom = ''; // 完了時も念のためリセット
+        }
+        
+        hintButton.addEventListener('click', showHint);
+        submitButton.addEventListener('click', submitAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+
+        loadQuestion();
+    </script>
+</body>
+</html>

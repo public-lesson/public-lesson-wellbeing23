@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私たちの考える「通学の公正性」｜アイデア共有ボード</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .sticky-note {
+            cursor: auto;
+            transition: all 0.2s ease-in-out;
+            min-height: 50px;
+            position: relative; 
+        }
+        .sticky-note:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .sticky-note.dragging {
+            opacity: 0.7;
+            transform: scale(1.05) rotate(3deg);
+            z-index: 1000;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            cursor: grabbing;
+        }
+        .delete-note-btn {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            cursor: pointer;
+            font-size: 1.3em;
+            color: #aaa;
+            display: none;
+            padding: 0px 5px;
+            line-height: 1;
+            background-color: rgba(240, 240, 240, 0.6);
+            border-radius: 50%;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            z-index: 10;
+        }
+        .sticky-note:hover .delete-note-btn,
+        .sticky-note:focus-within .delete-note-btn {
+            display: block;
+        }
+        .delete-note-btn:hover {
+            color: #333;
+            background-color: rgba(220, 220, 220, 0.8);
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            list-style-type: '💡 ';
+        }
+        details[open] summary {
+             list-style-type: '📖 ';
+        }
+        details > div {
+            margin-top: 0.5rem;
+            padding-left: 1.75rem;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a8a8a8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4 md:p-8 overflow-x-hidden">
+
+    <div id="whiteboard" class="min-h-screen w-full">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-blue-800" style="color: #4A90E2;">私たちの考える「通学の公正性」</h1>
+            <p class="text-md md:text-xl mt-2 text-gray-600">～ケイパビリティ・アプローチで探る6グループのアイデア共有ボード～</p>
+        </header>
+
+        <div class="fixed top-4 right-4 z-40 bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-gray-200 max-w-xs transition-all duration-300">
+             <details>
+                <summary class="text-lg text-gray-700">考えるヒント</summary>
+                <div class="space-y-4 text-sm text-gray-600">
+                    <details>
+                        <summary>ケイパビリティ・アプローチとは？</summary>
+                        <div>
+                            <p>単にお金や物を持っているかだけでなく、人が「何ができ、何になることができるか」という『潜在能力（ケイパビリティ）』に注目する考え方。</p>
+                        </div>
+                    </details>
+                     <details>
+                        <summary>「機能」と「潜在能力」の違い</summary>
+                        <div>
+                            <p><strong>機能:</strong> 実際にできていること。（例：自転車で学校に通う）<br><strong>潜在能力:</strong> やろうと思えばできる選択肢。（例：バスや電車で通う選択肢もある）</p>
+                        </div>
+                    </details>
+                     <details>
+                        <summary>「公正性」を考えるヒント</summary>
+                        <div>
+                            <p>みんなが同じである「平等」だけでなく、一人ひとりの状況に合わせて機会が与えられているか？という視点で考えてみよう。</p>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <!-- Group Card Template -->
+            <div class="group-card bg-white rounded-2xl shadow-md border-t-8 border-blue-400 p-4 flex flex-col space-y-4" style="display: none;">
+                <h2 class="text-2xl font-bold text-center text-blue-500">グループテンプレート</h2>
+                <!-- Subsections grid: now always 1 column -->
+                <div class="grid grid-cols-1 gap-4 flex-grow">
+                    <div class="subsection bg-green-50/50 rounded-lg p-3" data-subsection-index="0">
+                        <h3 class="font-bold text-green-800 flex justify-between items-center">1: サブセクションタイトル <button class="add-note-btn bg-green-200 text-green-800 rounded-full w-6 h-6 text-sm hover:bg-green-300">+</button></h3>
+                        <p class="text-xs text-gray-500 mb-2">サブセクション説明</p>
+                        <div class="notes-container min-h-[100px] space-y-2"></div> <!-- min-height adjusted slightly -->
+                    </div>
+                    <div class="subsection bg-yellow-50/50 rounded-lg p-3" data-subsection-index="1">
+                        <h3 class="font-bold text-yellow-800 flex justify-between items-center">2: サブセクションタイトル <button class="add-note-btn bg-yellow-200 text-yellow-800 rounded-full w-6 h-6 text-sm hover:bg-yellow-300">+</button></h3>
+                        <p class="text-xs text-gray-500 mb-2">サブセクション説明</p>
+                        <div class="notes-container min-h-[100px] space-y-2"></div>
+                    </div>
+                    <div class="subsection bg-orange-50/50 rounded-lg p-3" data-subsection-index="2">
+                        <h3 class="font-bold text-orange-800 flex justify-between items-center">3: サブセクションタイトル <button class="add-note-btn bg-orange-200 text-orange-800 rounded-full w-6 h-6 text-sm hover:bg-orange-300">+</button></h3>
+                        <p class="text-xs text-gray-500 mb-2">サブセクション説明</p>
+                        <div class="notes-container min-h-[100px] space-y-2"></div>
+                    </div>
+                    <!-- The 4th subsection is removed -->
+                </div>
+            </div>
+            <!-- End of Group Card Template -->
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainContainer = document.querySelector('main');
+            const templateCard = document.querySelector('.group-card');
+            const localStorageKey = 'ideaBoardData_v1.3'; // Updated key for new data structure
+
+            // Updated subsection definitions
+            const subsectionTemplates = [
+                { titlePrefix:'1:', titleMain:'Bさんの制限された潜在能力', description: 'どんな可能性が奪われている？', color:'green'},
+                { titlePrefix:'2:', titleMain:'公正性の問題点', description: '何が不公平だと感じる？', color:'yellow'},
+                { titlePrefix:'3:', titleMain:'改善アイデア', description: 'どうすればもっと良くなる？', color:'orange'}
+            ];
+            
+            const groupStyles = [
+                { name: 'グループ１', color: 'blue', border: 'border-blue-400', text: 'text-blue-500', subsections: subsectionTemplates },
+                { name: 'グループ２', color: 'green', border: 'border-green-400', text: 'text-green-500', subsections: subsectionTemplates },
+                { name: 'グループ３', color: 'purple', border: 'border-purple-400', text: 'text-purple-500', subsections: subsectionTemplates },
+                { name: 'グループ４', color: 'yellow', border: 'border-yellow-400', text: 'text-yellow-500', subsections: subsectionTemplates },
+                { name: 'グループ５', color: 'pink', border: 'border-pink-400', text: 'text-pink-500', subsections: subsectionTemplates },
+                { name: 'グループ６', color: 'indigo', border: 'border-indigo-400', text: 'text-indigo-500', subsections: subsectionTemplates }
+            ];
+
+            function saveBoardState() {
+                const boardData = {};
+                const groupCards = mainContainer.querySelectorAll('.group-card');
+                groupCards.forEach((card) => {
+                    const groupId = card.dataset.groupId; 
+                    if (!groupId) return; 
+
+                    boardData[groupId] = {};
+                    const subsections = card.querySelectorAll('.subsection');
+                    subsections.forEach((subsection) => {
+                        const subsectionIndex = subsection.dataset.subsectionIndex; 
+                        if (subsectionIndex === undefined) return;
+
+                        // Ensure we only try to save data for defined subsection templates (0, 1, 2)
+                        if (parseInt(subsectionIndex) >= subsectionTemplates.length) return;
+
+                        boardData[groupId][subsectionIndex] = [];
+                        const notes = subsection.querySelectorAll('.notes-container .sticky-note');
+                        notes.forEach(note => {
+                            let noteColor = 'yellow'; 
+                            const bgColorClass = Array.from(note.classList).find(cls => cls.startsWith('bg-') && cls.endsWith('-100'));
+                            if (bgColorClass) {
+                                noteColor = bgColorClass.split('-')[1];
+                            }
+                            boardData[groupId][subsectionIndex].push({
+                                text: note.textContent.replace(/×$/, '').trim(),
+                                color: noteColor
+                            });
+                        });
+                    });
+                });
+                try {
+                    localStorage.setItem(localStorageKey, JSON.stringify(boardData));
+                } catch (e) {
+                    console.error("Error saving to localStorage:", e);
+                }
+            }
+
+            function loadBoardState() {
+                let savedData;
+                try {
+                    const rawData = localStorage.getItem(localStorageKey);
+                    if (rawData) {
+                        savedData = JSON.parse(rawData);
+                    }
+                } catch (e) {
+                    console.error("Error parsing data from localStorage:", e);
+                    localStorage.removeItem(localStorageKey); 
+                }
+                return savedData;
+            }
+            
+            const loadedBoardData = loadBoardState();
+
+            if (templateCard) {
+                groupStyles.forEach((styleDef) => { 
+                    const newCard = templateCard.cloneNode(true);
+                    newCard.style.display = ''; 
+                    const groupId = styleDef.name; 
+                    newCard.dataset.groupId = groupId; 
+
+                    newCard.className = newCard.className.replace(/border-\w+-\d+/g, '');
+                    newCard.classList.add(styleDef.border);
+                    
+                    const titleElement = newCard.querySelector('h2');
+                    titleElement.textContent = styleDef.name;
+                    titleElement.className = titleElement.className.replace(/text-\w+-\d+/g, '');
+                    titleElement.classList.add(styleDef.text);
+                    
+                    const subsectionsInCard = newCard.querySelectorAll('.subsection');
+                    subsectionsInCard.forEach((subsectionDiv) => { 
+                        const currentSubsectionIndex = parseInt(subsectionDiv.dataset.subsectionIndex);
+
+                        // If the subsection index from HTML is beyond our new template definition, remove it
+                        if (currentSubsectionIndex >= subsectionTemplates.length) {
+                            subsectionDiv.remove();
+                            return; // Skip further processing for this removed subsection
+                        }
+
+                        if (styleDef.subsections && styleDef.subsections[currentSubsectionIndex]) {
+                            const subsectionData = styleDef.subsections[currentSubsectionIndex];
+                            const h3 = subsectionDiv.querySelector('h3');
+                            const button = h3.querySelector('.add-note-btn');
+                            const pTag = subsectionDiv.querySelector('p.text-xs');
+                            const fullTitle = `${subsectionData.titlePrefix} ${subsectionData.titleMain}`;
+
+                            // Clear existing text nodes in h3 before adding new title
+                            Array.from(h3.childNodes).forEach(child => {
+                                if (child.nodeType === Node.TEXT_NODE) {
+                                    h3.removeChild(child);
+                                }
+                            });
+                            const newTitleTextNode = document.createTextNode(fullTitle + " ");
+                            h3.insertBefore(newTitleTextNode, button || h3.firstChild);
+                            
+                            if (pTag) pTag.textContent = subsectionData.description;
+                            h3.className = h3.className.replace(/text-\w+-\d+/g, ''); 
+                            h3.classList.add(`text-${subsectionData.color}-800`);
+                            button.className = button.className.replace(/bg-\w+-\d+/g, '').replace(/text-\w+-\d+/g, '').replace(/hover:bg-\w+-\d+/g, '');
+                            button.classList.add(`bg-${subsectionData.color}-200`, `text-${subsectionData.color}-800`, `hover:bg-${subsectionData.color}-300`);
+                            subsectionDiv.className = subsectionDiv.className.replace(/bg-\w+-\d+\/\d+/g, '').replace(/bg-\w+-50\/50/g, ''); 
+                            subsectionDiv.classList.add(`bg-${subsectionData.color}-50/50`);
+                        }
+
+                        const notesContainer = subsectionDiv.querySelector('.notes-container');
+                        if (loadedBoardData && loadedBoardData[groupId] && loadedBoardData[groupId][currentSubsectionIndex] && loadedBoardData[groupId][currentSubsectionIndex].length > 0) {
+                            loadedBoardData[groupId][currentSubsectionIndex].forEach(noteData => {
+                                addStickyNote(notesContainer, noteData.text, noteData.color);
+                            });
+                        } else {
+                            let defaultNoteColor = 'yellow';
+                            if (styleDef.subsections && styleDef.subsections[currentSubsectionIndex]) {
+                                defaultNoteColor = styleDef.subsections[currentSubsectionIndex].color;
+                            }
+                            addStickyNote(notesContainer, 'ここにテキストを入力…', defaultNoteColor);
+                        }
+                    });
+                    mainContainer.appendChild(newCard);
+                });
+                if (mainContainer.contains(templateCard)) {
+                    templateCard.remove();
+                }
+            }
+
+            function addStickyNote(container, text = '新しいアイデア', noteThemeColor = 'yellow') {
+                const note = document.createElement('div');
+                const safeBgColor = ['yellow', 'blue', 'green', 'purple', 'pink', 'indigo', 'orange'].includes(noteThemeColor) ? `bg-${noteThemeColor}-100` : 'bg-yellow-100';
+                const safeBorderColor = ['yellow', 'blue', 'green', 'purple', 'pink', 'indigo', 'orange'].includes(noteThemeColor) ? `border-${noteThemeColor}-200` : 'border-yellow-200';
+
+                note.classList.add('sticky-note', 'p-2', 'rounded-md', 'shadow-sm', 'text-sm', 'border');
+                note.classList.add(safeBgColor, safeBorderColor);
+                
+                note.setAttribute('contenteditable', 'true');
+                note.textContent = text;
+
+                const deleteBtn = document.createElement('span');
+                deleteBtn.classList.add('delete-note-btn');
+                deleteBtn.innerHTML = '×';
+                note.appendChild(deleteBtn);
+
+                container.appendChild(note);
+                makeDraggable(note);
+                note.addEventListener('input', userActionSave);
+            }
+
+            function userActionSave() {
+                saveBoardState();
+            }
+
+            document.body.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-note-btn')) {
+                    const subsection = e.target.closest('.subsection');
+                    const notesContainer = subsection.querySelector('.notes-container');
+                    let noteColor = 'yellow'; 
+                    const h3 = subsection.querySelector('h3');
+                    if (h3) {
+                        const colorClass = Array.from(h3.classList).find(cls => cls.startsWith('text-') && cls.endsWith('-800'));
+                        if (colorClass) noteColor = colorClass.split('-')[1];
+                    }
+                    addStickyNote(notesContainer, '新しいアイデア', noteColor); 
+                    userActionSave();
+                }
+                else if (e.target.classList.contains('delete-note-btn')) {
+                    const noteToDelete = e.target.closest('.sticky-note');
+                    if (noteToDelete) {
+                        noteToDelete.remove();
+                        userActionSave();
+                    }
+                }
+            });
+
+            let draggedItem = null;
+            let offsetX, offsetY;
+            let originalParent = null;
+
+            function makeDraggable(element) {
+                element.addEventListener('mousedown', function (e) {
+                    if (e.target.classList.contains('delete-note-btn')) return;
+                    if (e.target === element && element.isContentEditable) return; 
+
+                    draggedItem = element;
+                    originalParent = element.parentNode; 
+                    const rect = draggedItem.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    draggedItem.classList.add('dragging');
+                    draggedItem.style.position = 'absolute'; 
+                    draggedItem.style.zIndex = '1000'; 
+                    document.body.appendChild(draggedItem);
+                    draggedItem.style.left = (e.pageX - offsetX) + 'px';
+                    draggedItem.style.top = (e.pageY - offsetY) + 'px';
+                });
+            }
+
+            document.addEventListener('mousemove', function moveItem(e) {
+                 if (!draggedItem) return;
+                 draggedItem.style.left = e.pageX - offsetX + 'px';
+                 draggedItem.style.top = e.pageY - offsetY + 'px';
+            });
+
+            document.addEventListener('mouseup', function (e) {
+                if (!draggedItem) return;
+                const dropTarget = getDropTarget(e.clientX, e.clientY);
+                if (dropTarget && dropTarget.classList.contains('notes-container')) {
+                    dropTarget.appendChild(draggedItem);
+                } else if (originalParent) { 
+                    originalParent.appendChild(draggedItem);
+                } else {
+                    document.body.appendChild(draggedItem); 
+                    console.warn("Sticky note dropped outside a valid container and original parent was not found.");
+                }
+                draggedItem.classList.remove('dragging');
+                draggedItem.style.position = ''; 
+                draggedItem.style.left = '';
+                draggedItem.style.top = '';
+                draggedItem.style.zIndex = '';
+                draggedItem = null;
+                originalParent = null;
+                userActionSave();
+            });
+            
+            function getDropTarget(x, y) {
+                if (!draggedItem) return null;
+                draggedItem.style.visibility = 'hidden';
+                const elementUnderPointer = document.elementFromPoint(x, y);
+                draggedItem.style.visibility = 'visible';
+                if (elementUnderPointer) {
+                    return elementUnderPointer.closest('.notes-container');
+                }
+                return null;
+            }
+            if (!loadedBoardData) {
+                 userActionSave();
+            }
+        });
+    </script>
+</body>
+</html>

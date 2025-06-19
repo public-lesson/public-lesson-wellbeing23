@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公共「AI時代のウェルビーイング」</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc; /* Very light gray background */
+            color: #1f2937; /* Default text color */
+        }
+        .main-color-bg {
+            background-color: #4A90E2; /* Calm Blue */
+        }
+        .main-color-text {
+            color: #4A90E2;
+        }
+        .accent-color-bg {
+            background-color: #F5A623; /* Yellow Accent */
+        }
+        .accent-color-text {
+            color: #F5A623;
+        }
+        .accent-color-hover:hover {
+            background-color: #F88C33; /* Orange Accent for hover */
+        }
+        .section-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem; /* Responsive padding */
+            border-bottom: 1px solid #e5e7eb; /* Light gray border for section separation */
+        }
+        .section-container:last-child {
+            border-bottom: none;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 1.75rem; /* Slightly larger section titles */
+            margin-bottom: 1.5rem;
+            color: #374151; /* Darker gray for headings */
+        }
+        .icon-text-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1.125rem;
+        }
+        .icon-text-list svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.75rem;
+            color: #4A90E2; /* Main color for icons */
+        }
+        .button-style {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; /* Rounded corners */
+            text-decoration: none;
+            font-weight: 700;
+            text-align: center;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+        }
+        .attention-box {
+            background-color: #FFFBEB; /* Light yellow background */
+            border: 1px solid #FBBF24; /* Yellow border */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .attention-box-title {
+            font-weight: 700;
+            color: #D97706; /* Darker yellow for title */
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+        dt {
+            font-weight: bold;
+            color: #4A90E2; /* Main color for definition terms */
+            margin-top: 1rem;
+        }
+        dd {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .section-container {
+                padding: 1.5rem 0.75rem;
+            }
+            .button-style {
+                width: 100%; /* Full width buttons on small screens */
+                margin-bottom: 0.5rem;
+            }
+            .icon-text-list li {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 main-color-bg text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <span class="text-lg font-semibold">甲南高校78期生</span>
+            <nav class="hidden md:flex space-x-4">
+                <a href="#section1" class="hover:text-yellow-300">はじめに</a>
+                <a href="#section3" class="hover:text-yellow-300">AI対話</a>
+                <a href="#section4" class="hover:text-yellow-300">協働学習</a>
+                <a href="#section5" class="hover:text-yellow-300">振り返り</a>
+            </nav>
+            <button id="mobileMenuButton" class="md:hidden focus:outline-none" aria-label="ナビゲーションメニューを開閉" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden bg-blue-600">
+            <a href="#section1" class="block px-4 py-2 text-sm hover:bg-blue-700">はじめに</a>
+            <a href="#section3" class="block px-4 py-2 text-sm hover:bg-blue-700">AI対話</a>
+            <a href="#section4" class="block px-4 py-2 text-sm hover:bg-blue-700">協働学習</a>
+            <a href="#section5" class="block px-4 py-2 text-sm hover:bg-blue-700">振り返り</a>
+        </div>
+    </header>
+
+    <!-- Section 0: Header Area -->
+    <section class="main-color-bg text-white text-center py-16 md:py-24 px-4" style="background-image: url('images/hero-background.png'); background-size: cover; background-position: center;">
+        <div class="bg-black bg-opacity-30 p-8 rounded-lg inline-block">
+             <h1 class="text-4xl md:text-5xl font-bold mb-4">公共「AI時代のウェルビーイング」</h1>
+             <p class="text-xl md:text-2xl">～ケイパビリティ・アプローチで考える「より良い社会」～</p>
+        </div>
+    </section>
+
+    <!-- Section 1: Introduction -->
+    <section id="section1" class="section-container">
+        <h2 class="main-color-text">ようこそ！</h2>
+        <p class="mb-8 text-lg">
+            AIとの対話やグループ学習を通して、みなさんの「幸せ」について考えていきましょう！
+        </p>
+
+        <h3 class="text-2xl font-semibold mb-4 main-color-text">本日の流れ</h3>
+        <ul class="icon-text-list space-y-3">
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.355a7.5 7.5 0 01-4.5 0m4.5 0v-.75A2.25 2.25 0 0013.5 14.25H10.5A2.25 2.25 0 008.25 12V9.75a2.25 2.25 0 011.5-.189M10.5 9.75h.008v.008H10.5V9.75zm.75 0h.008v.008H11.25V9.75z" /></svg>
+                <span>(1) はじめに（5分）: 「ケイパビリティ・アプローチ」って何？</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                <span>(2) AI対話！（10分）: 「機能」と「潜在能力」を確認しよう！</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                <span>(3) グループで考えよう！（30分）: 「通学の困りごと」を「公正さ」から話し合おう！</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>(4) 振り返り（5分）: 今日の学びを整理しよう！</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Section 2: "Hajime ni" (Beginning) -->
+    <section id="section2" class="section-container">
+        <h2 class="main-color-text">(1) 「ケイパビリティ・アプローチ」って何？</h2>
+        <p class="mb-4 text-lg">
+            「幸せ」って、どういう状態だと思う？
+        </p>
+        <p class="mb-8 text-lg">
+            テストで良い点を取ること？ 志望校に合格すること？ もっと他の何か？
+        </p>
+
+        <h3 class="text-xl font-semibold mb-2 main-color-text">ケイパビリティ・アプローチ紹介</h3>
+        <p class="mb-4 text-lg">
+            経済学者のアマルティア・センは、「人が実際に何ができていて（＝機能）、どんな<strong>選択肢の中から自由に選べるか（＝潜在能力）</strong>が、本当の豊かさを考える上で大事だ！」と考えました。これが「ケイパビリティ・アプローチ」の基本的な考え方です。
+        </p>
+
+        <img src="images/Capability_Approach.png" alt="ケイパビリティ・アプローチの概念図：財、潜在能力、機能の関係性を示したイラスト" class="mx-auto my-6 rounded-lg shadow-md w-full" onerror="this.onerror=null; this.src='https://placehold.co/800x450/E0E0E0/B0B0B0?text=画像「Capability_Approach.png」の読み込みに失敗しました。パスを確認してください。'; this.alt='ケイパビリティ・アプローチの概念図の読み込みエラー';">
+
+        <p class="text-center text-sm text-gray-600 mb-8">
+            財（モノやお金）があっても、それを使える環境や能力（潜在能力）がなければ、実際に豊かな活動（機能）にはつながらない。
+        </p>
+
+        <h3 class="text-xl font-semibold mb-2 main-color-text">キーワード整理</h3>
+        <dl>
+            <dt>機能（Functioning）:</dt>
+            <dd>実際にできていること・なっている状態 （例：健康である、学校に通っている）</dd>
+            <dt>潜在能力（Capability）:</dt>
+            <dd>できるようになる可能性・選べる選択肢の幅広さ （例：治療を受けられる、複数の進学先を選べる）</dd>
+            <dt>公正性（Fairness）:</dt>
+            <dd>その状態や選択肢は、<strong>みんなにとって公平</strong>かな？</dd>
+        </dl>
+        <div class="text-center mt-8">
+            <a href="#section3" class="main-color-text text-2xl hover:text-yellow-500 transition-colors">▼ 次に進む</a>
+        </div>
+    </section>
+
+    <!-- Section 3: "AI to Taiwa" (Dialogue with AI) -->
+    <section id="section3" class="section-container">
+        <h2 class="main-color-text">(2) AIに応えて「機能」と「潜在能力」を確認しよう！</h2>
+        <p class="mb-4 text-lg">
+            「ケイパビリティ・アプローチ確認テスト」を開き、AIからの出題に解答してください。
+        </p>
+        <!-- 不要な </ul> を削除 -->
+
+        <div class="attention-box">
+            <p class="attention-box-title">【重要】AIと上手に付き合うために</p>
+            <p class="text-gray-700">
+                AIはたくさんのことを知っていますが、いつも100%正しい情報を教えてくれるとは限りません。
+                「他の考え方はないかな？」と、一度立ち止まって自分の頭で考えることを大切にしてください。
+            </p>
+        </div>
+
+        <div class="text-center">
+            <!-- TODO: 以下のhrefに実際のプロンプトへのリンクを挿入してください -->
+            <a href="capability_approach_quiz.html" target="_blank" class="button-style accent-color-bg text-white accent-color-hover mb-4 w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m9.75 9.25c0-.621-.504-1.125-1.125-1.125H18a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v9.25a1.125 1.125 0 001.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125zm-17.25-9.25v9.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125v-9.25c0-.621-.504-1.125-1.125-1.125H6.75A2.25 2.25 0 004.5 12.75V7.5A2.25 2.25 0 016.75 5.25h9.75a2.25 2.25 0 012.25 2.25v9.25c0 .621.504 1.125 1.125 1.125h3.375c.621 0 1.125-.504 1.125-1.125V7.875c0-1.298-.62-2.48-1.636-3.239l-.001-.001A2.25 2.25 0 0018 3.75H6.75A2.25 2.25 0 004.5 6v.375c0 .621.504 1.125 1.125 1.125H6.75v3.25H4.5A2.25 2.25 0 002.25 15v4.125c0 .621.504 1.125 1.125 1.125h3.375c.621 0 1.125-.504 1.125-1.125V17.25z" /></svg>
+                ケイパビリティ・アプローチ確認テストを開く
+            </a>
+        </div>
+          
+        <div class="text-center mt-8">
+            <a href="#section4" class="main-color-text text-2xl hover:text-yellow-500 transition-colors">▼ 次に進む</a>
+        </div>
+    </section>
+
+    <!-- Section 4: "Group de Kangaeyou" (Group Work) -->
+    <section id="section4" class="section-container">
+        <h2 class="main-color-text">(3) グループで「公正さ」について話し合おう！</h2>
+        <p class="mb-4 text-lg">
+            ここからは各グループで話し合います。
+        </p>
+        <p class="mb-6 text-lg">
+            「AI対話用プロンプト (グループ用) 」を開き、ChatGPTやGemini等にプロンプトをコピペして対話を開始してください。AIとの対話で各自が考えたことを「共有ボード」に入力し、グループで考察を深めていきましょう。
+        </p>
+
+        <h3 class="text-xl font-semibold mb-3 main-color-text">話し合いのテーマ</h3>
+        <ul class="list-none mb-6 space-y-3">
+            <li class="flex items-start">
+                <span class="accent-color-text text-2xl mr-3">🤔</span>
+                <div>Bさんはどんな「潜在能力（選択肢）」が制限されていそう？</div>
+            </li>
+            <li class="flex items-start">
+                <span class="accent-color-text text-2xl mr-3">❓</span>
+                <div>この状況は「公正性」の観点からどう考えられる？</div>
+            </li>
+            <li class="flex items-start">
+                <span class="accent-color-text text-2xl mr-3">💡</span>
+                <div>どうすれば、もっと公平な状況に近づけると思う？</div>
+            </li>
+        </ul>
+        
+        <div class="text-center">
+            <!-- TODO: 以下のhrefに実際のプロンプトへのリンクを挿入してください -->
+            <a href="prompts/prompt_group_ver3.txt" target="_blank" class="button-style accent-color-bg text-white accent-color-hover mb-4 w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m9.75 9.25c0-.621-.504-1.125-1.125-1.125H18a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v9.25a1.125 1.125 0 001.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125zm-17.25-9.25v9.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125v-9.25c0-.621-.504-1.125-1.125-1.125H6.75A2.25 2.25 0 004.5 12.75V7.5A2.25 2.25 0 016.75 5.25h9.75a2.25 2.25 0 012.25 2.25v9.25c0 .621.504 1.125 1.125 1.125h3.375c.621 0 1.125-.504 1.125-1.125V7.875c0-1.298-.62-2.48-1.636-3.239l-.001-.001A2.25 2.25 0 0018 3.75H6.75A2.25 2.25 0 004.5 6v.375c0 .621.504 1.125 1.125 1.125H6.75v3.25H4.5A2.25 2.25 0 002.25 15v4.125c0 .621.504 1.125 1.125 1.125h3.375c.621 0 1.125-.504 1.125-1.125V17.25z" /></svg>
+                AI対話用プロンプト (グループ用) を開く
+            </a>
+            <!-- TODO: 以下のhrefに実際のワークシートへのリンクを挿入してください -->
+            <a href="commute_fairness_board.html" target="_blank" class="button-style main-color-bg text-white hover:bg-blue-700 w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                共有ボードのデジタル版を開く
+            </a>
+        </div>
+        <div class="text-center mt-8">
+            <a href="#section5" class="main-color-text text-2xl hover:text-yellow-500 transition-colors">▼ 次に進む</a>
+        </div>
+    </section>
+
+    <!-- Section 5: "Matome to Furikaeri" (Summary and Reflection) -->
+    <section id="section5" class="section-container">
+        <h2 class="main-color-text">(4) 今日の学びを整理し、振り返ろう！</h2>
+        <p class="mb-6 text-lg">
+            今日は、「ケイパビリティ・アプローチ」という考え方を通して、人の幸せや社会のあり方について考えました。
+        </p>
+
+        <div class="bg-blue-50 p-6 rounded-lg shadow mb-8">
+            <h3 class="text-xl font-semibold mb-3 main-color-text">本日のまとめ</h3>
+            <ul class="list-disc list-inside space-y-2 text-lg">
+                <li><strong>「機能（できていること）」だけでなく、「潜在能力（選べる可能性と自由）」が大切！</strong></li>
+                <li><strong>AIは便利なツールだけど、批判的に情報を吟味することも忘れずに！</strong></li>
+                <li><strong>身の回りの「ちょっとした不公平」にも、「公正性」の視点から目を向けてみよう！</strong></li>
+            </ul>
+        </div>
+
+        <h3 class="text-xl font-semibold mb-3 main-color-text">自己評価の振り返り入力</h3>
+        <p class="mb-6 text-lg">
+            今日の学びを自分自身で評価し、授業を振り返ってください。次回の授業では、より多くの人々の潜在能力を拡大するためにはどのような社会の仕組みやルールが必要なのか「社会のあり方」そのものを構想していきます。
+        </p>
+
+<!-- 変更後のコード -->
+<div class="text-center sm:flex sm:justify-center sm:items-center sm:space-x-4">
+    <!-- 既存の橙色ボタン -->
+    <a href="https://forms.gle/nTwGtBAqJJQuuKCm8" target="_blank" class="button-style accent-color-bg text-white accent-color-hover mb-4 sm:mb-0 w-full sm:w-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.82.61l-4.725-2.885a.563.563 0 00-.652 0l-4.725 2.885a.562.562 0 01-.82-.61l1.285-5.385a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+        自己評価ルーブリックに入力する
+    </a>
+    <!-- 【ここから追加】新しく作成する青色ボタン -->
+    <!-- TODO: 以下のhrefに実際のルーブリックPDFなどへのリンクを挿入してください -->
+    <a href="images/rublic01.jpg" target="_blank" class="button-style main-color-bg text-white hover:bg-blue-700 mb-4 sm:mb-0 w-full sm:w-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+        ルーブリック拡大版はコチラ
+    </a>
+    <!-- 【ここまで追加】-->
+</div>
+
+        <p class="mt-10 text-center text-lg">
+            ご協力ありがとうございました。今日の学びが、皆さんのこれからの「公共」の学習や、社会を見る目に少しでも役立つことを願っています。
+        </p>
+    </section>
+
+    <footer class="text-center py-8 bg-gray-100 text-gray-600 text-sm">
+        <p>© 2025 鹿児島県立甲南高等学校 公民科</p>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', !isHidden); // true if menu is visible, false if hidden
+            });
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return; // Prevent scrolling for placeholder links
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu if open after click
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        if (mobileMenuButton) {
+                            mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
